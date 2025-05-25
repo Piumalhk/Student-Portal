@@ -1,11 +1,26 @@
 import React from "react";
+import { useState,useEffect } from "react";
+import Loading from "./Loading";
+import { Link } from "react-router-dom";
 
 
 export default function FeedbackForm() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // simulate loading delay
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500); // 1.5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loading />;
   return (
     <div>
       {" "}
-      <form className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+      <form className="max-w-md mx-auto mt-20 bg-white p-6 rounded-lg shadow-md ">
         <h2 className="text-xl font-semibold mb-4 text-gray-700">
           Submit Your Feedback
         </h2>
@@ -18,6 +33,7 @@ export default function FeedbackForm() {
           Submit
         </button>
       </form>
+      <Link to={"/"}>Go Back to Home</Link>
     </div>
   );
 }
