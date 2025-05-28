@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { useState, useEffect } from "react";
 import Loading from "../components/Loading";
+import ImageChanger from "../components/ImageChanger";
+
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -48,9 +50,9 @@ export default function HomePage() {
       </div>
 
 
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white text-center mt-200 h-30 absolute w-full left-0">
+<ImageChanger/>
+     
+      <footer className="bg-gray-800 text-white text-center mt-10 h-30 absolute w-full left-0">
         <p>© 2025 Piumal Harshana | All rights reserved</p>
       </footer>
     </div>
