@@ -2,6 +2,7 @@ import React from "react";
 import { useState,useEffect } from "react";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
+import bgimage from "../assets/background.jpg";
 
 
 export default function FeedbackForm() {
@@ -18,9 +19,14 @@ export default function FeedbackForm() {
 
   if (loading) return <Loading />;
   return (
-    <div>
-      {" "}
-      <form className="max-w-md mx-auto mt-20 bg-white p-6 rounded-lg shadow-md ">
+    <div  className="absolute w-full left-0 min-h-screen py-12 px-4 " 
+      style={{ 
+        backgroundImage: `url(${bgimage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
+ 
+      <form className="max-w-md mx-auto mt-30 bg-white p-6 rounded-lg shadow-md ">
         <h2 className="text-xl font-semibold mb-4 text-gray-700">
           Submit Your Feedback
         </h2>
@@ -34,6 +40,8 @@ export default function FeedbackForm() {
         </button>
       </form>
       <Link to={"/"}>Go Back to Home</Link>
-    </div>
+
+      </div>
+   
   );
 }
