@@ -25,7 +25,10 @@ export default function FeedbackForm() {
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}>
- 
+ <div className="absolute inset-0 bg-black opacity-30"></div>
+  
+  {/* Content (will stay fully opaque) */}
+  <div className="relative z-10"> 
       <form className="max-w-md mx-auto mt-30 bg-white p-6 rounded-lg shadow-md ">
         <h2 className="text-xl font-semibold mb-4 text-gray-700">
           Submit Your Feedback
@@ -42,6 +45,6 @@ export default function FeedbackForm() {
       <Link to={"/"}>Go Back to Home</Link>
 
       </div>
-   
+    </div>
   );
 }
