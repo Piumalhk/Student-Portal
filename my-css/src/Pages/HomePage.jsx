@@ -22,7 +22,7 @@ export default function HomePage() {
   return (
     <div>
       <NavBar />
-      <LogingPage />
+    
 
       <Link to="/Feedback">Go to Feedback Form</Link>
 
