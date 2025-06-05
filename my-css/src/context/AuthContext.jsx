@@ -5,7 +5,7 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+   const [isLoading, setIsLoading] = useState(false);
   // Check if user was previously logged in
   useEffect(() => {
     const loginStatus = localStorage.getItem('isLoggedIn');
@@ -19,13 +19,20 @@ export function AuthProvider({ children }) {
     localStorage.setItem('isLoggedIn', 'true');
   };
   
-  const logout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn');
+ const logout = () => {
+    // Start loading animation
+    setIsLoading(true);
+    
+    // Simulate logout process with a delay
+    setTimeout(() => {
+      setIsLoggedIn(false);
+      localStorage.removeItem('isLoggedIn');
+      setIsLoading(false); // End loading animation
+    }, 1500); // 1.5 second delay to show loading
   };
   
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

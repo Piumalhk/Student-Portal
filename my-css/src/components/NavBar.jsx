@@ -3,12 +3,14 @@ import search from "../assets/search-big.png";
 import menu from "../assets/menu-wide.png";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import Loading from './Loading';
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout,  isLoading } = useAuth();
   return (
     <div >
+      {isLoading && <Loading />}
       <header className="w-full flex justify-between items-center text-black h-18 bg-stone-100  drop-shadow-md  absolute inset-x-0 top-0 ">
         <a href="#">
           <img src={logo} alt="" className="w-45 h-18 self-center ps-14" />
@@ -80,6 +82,7 @@ export default function NavBar() {
               />
             </div>
           </ul>
+          
         </div>
       )}
     </div>
