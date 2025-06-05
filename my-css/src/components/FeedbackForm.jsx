@@ -43,6 +43,7 @@ export default function FeedbackForm() {
         </button>
       </form>
       <Link to={"/"}>Go Back to Home</Link>
+       <Link to={"/Summary"}>Go Back to Summary</Link>
 
       </div>
     </div>
