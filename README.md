@@ -1,6 +1,6 @@
 # 📝 Feedback Portal
 
-A simple full-stack web application where users can submit feedback and admins can manage it. Built with **React (Vite)** + **Tailwind CSS** on the frontend, and **Laravel (PHP)** + **MongoDB** on the backend.
+A simple full-stack web application where users can submit feedback and admins can manage it. Built with **React (Vite)** on the frontend, and **Express.js** + **MongoDB** on the backend.
 
 ---
 
@@ -8,11 +8,9 @@ A simple full-stack web application where users can submit feedback and admins c
 
 **Frontend**  
 - React (Vite)
-- Tailwind CSS
-- Axios
 
 **Backend**  
-- PHP (Laravel)
+- Express
 - MongoDB (with `jenssegers/mongodb` package)
 
 **Other**  
