@@ -6,6 +6,7 @@ import SignUp from "./components/SignUp";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Loading from "./components/Loading";
 import AdminSummary from "./Pages/AdminSummary";
+import AdminLogin from "./components/AdminLogin";
 
 
 function AppContent() {
@@ -21,6 +22,7 @@ function AppContent() {
           <Route path="/Loging" element={<LogingPage />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Summary" element={<AdminSummary />} />
+          <Route path="/Admin" element={<AdminLogin />} />
         </Routes>
       </Router>
     </div>
