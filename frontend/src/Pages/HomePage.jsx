@@ -61,6 +61,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
       </div>
 
       <footer className="bg-gray-800 text-white py-8 mt-20 w-100%">
