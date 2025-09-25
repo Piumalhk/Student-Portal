@@ -41,7 +41,9 @@ const signup = async (req, res) => {
     });
 
     // Save the user
-    await newUser.save(); // Generate JWT token
+    await newUser.save(); 
+    
+    // Generate JWT token
     const token = jwt.sign(
       { userId: newUser._id, username: newUser.username, role: newUser.role },
       JWT_SECRET_KEY,

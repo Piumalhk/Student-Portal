@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import Loading from "./Loading";
+
+// Admin API URL
+const ADMIN_API_URL = "http://localhost:5000/api/admin-auth";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
@@ -10,22 +12,60 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(true);
   const [formSubmitting, setFormSubmitting] = useState(false);
 
-  const { login, isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in as admin
+  // Check if already logged in as admin
   useEffect(() => {
+    // Check if admin API is available
+    const checkAdminAPI = async () => {
+      try {
+        const response = await fetch(`${ADMIN_API_URL}/status`);
+        if (response.ok) {
+          console.log("Admin API is available");
+        } else {
+          console.error("Admin API returned error:", await response.text());
+        }
+      } catch (error) {
+        console.error("Failed to connect to admin API:", error);
+      }
+
+      setLoading(false);
+    };
+
+    // Check if admin token exists
+    const adminToken = localStorage.getItem("adminToken");
+    if (adminToken) {
+      verifyAdminToken(adminToken);
+    } else {
+      checkAdminAPI();
+    }
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
 
-    if (isLoggedIn && user?.role === "admin") {
-      navigate("/admin");
-    }
-
     return () => clearTimeout(timer);
-  }, [isLoggedIn, user, navigate]);
+  }, [navigate]);
 
+  // Verify admin token
+  const verifyAdminToken = async (token) => {
+    try {
+      const response = await fetch(`${ADMIN_API_URL}/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        navigate("/Summary"); // Valid token, redirect to admin dashboard
+      } else {
+        // Invalid token, remove it
+        localStorage.removeItem("adminToken");
+      }
+    } catch (error) {
+      console.error("Error verifying admin token:", error);
+      localStorage.removeItem("adminToken");
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,26 +76,45 @@ export default function AdminLogin() {
 
     setError("");
     setFormSubmitting(true);
+    console.log(
+      `Attempting login with username: ${username}, password length: ${password.length}`
+    );
 
     try {
-      const result = await login(username, password);
+      console.log(`Sending request to: ${ADMIN_API_URL}/login`);
+      const response = await fetch(`${ADMIN_API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      console.log(`Response status: ${response.status}`);
+      const data = await response.json();
+      console.log("Response data:", data);
 
-      if (result.success) {
-        if (user?.role !== "admin") {
-          setError("Access denied. Admin privileges required.");
-          setFormSubmitting(false);
-          return;
-        }
-        navigate("/admin");
+      if (response.ok) {
+        localStorage.setItem("adminToken", data.token);
+
+        // Navigate to the admin dashboard
+        console.log("Login successful, navigating to admin dashboard");
+        navigate("/Summary");
       } else {
         setError(
-          result.message || "Login failed. Please check your credentials."
+          data.message || "Login failed. Please check your credentials."
         );
         setFormSubmitting(false);
       }
     } catch (err) {
       console.error("Login error:", err);
-      setError("An error occurred during login. Please try again.");
+      // More specific error message based on the type of error
+      if (err.name === "TypeError" && err.message.includes("fetch")) {
+        setError(
+          "Cannot connect to the server. Please check your internet connection or try again later."
+        );
+      } else {
+        setError("An error occurred during login. Please try again.");
+      }
       setFormSubmitting(false);
     }
   };

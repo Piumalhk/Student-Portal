@@ -15,7 +15,7 @@ export default function NavBar() {
         <a href="#">
           <img src={logo} alt="" className="w-45 h-18 self-center ps-14" />
         </a>
-        <ul className="hidden xl:flex items-center gap-12 font-semibold text-base pl-125">
+        <ul className="hidden xl:flex items-center gap-12 font-semibold text-base ">
           <li className="p-3 hover:bg-sky-300 px-2 py-1.5 hover:text-white rounded-md transition-all cursor-pointer">
             Home
           </li>

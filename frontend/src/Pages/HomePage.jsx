@@ -38,7 +38,7 @@ export default function HomePage() {
   // If not logged in, show the landing page
   return (
     <div>
-      <NavBar />
+      <NavBar /><br></br>
       <ImageChanger />
       <div className="pt-100">
         <section className="w-full min-h-[350px] bg-white flex items-center justify-center">
