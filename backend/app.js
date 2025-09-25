@@ -9,6 +9,7 @@ const adminAuthRoutes = require("./routes/admin-auth-routes");
 const feedbackRoutes = require("./routes/feedback-routes");
 const noticeRoutes = require("./routes/notice-routes");
 
+
 const app = express();
 
 // Middleware
@@ -21,6 +22,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/notices", noticeRoutes);
+
 
 // Root route for API health check
 app.get("/", (req, res) => {
