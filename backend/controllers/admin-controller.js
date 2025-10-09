@@ -236,6 +236,58 @@ const deleteAnnouncement = async (req, res) => {
   }
 };
 
+// Add these functions to your admin-controller.js
+const getPublicAnnouncements = async (req, res) => {
+  try {
+    // Get only active/published announcements
+    const announcements = await Announcement.find({ 
+      status: 'active' 
+    }).sort({ 
+      priority: -1, // High priority first
+      createdAt: -1  // Most recent first
+    });
+
+    res.status(200).json({
+      success: true,
+      count: announcements.length,
+      announcements: announcements
+    });
+  } catch (error) {
+    console.error("Error fetching public announcements:", error);
+    res.status(500).json({ 
+      message: "Error fetching announcements",
+      error: error.message 
+    });
+  }
+};
+
+const getPublicSchedule = async (req, res) => {
+  try {
+    // Get today's and future schedule items
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const scheduleItems = await Schedule.find({
+      date: { $gte: today }
+    }).sort({ 
+      date: 1,  // Earliest first
+      time: 1   // Earlier time first
+    });
+
+    res.status(200).json({
+      success: true,
+      count: scheduleItems.length,
+      schedule: scheduleItems
+    });
+  } catch (error) {
+    console.error("Error fetching public schedule:", error);
+    res.status(500).json({ 
+      message: "Error fetching schedule",
+      error: error.message 
+    });
+  }
+};
+
 module.exports = {
   getDashboardSummary,
   verifyAdmin,
@@ -245,6 +297,8 @@ module.exports = {
   getSchedule,
   addScheduleItem,
   deleteScheduleItem,
+  getPublicAnnouncements,
+  getPublicSchedule,
   getAnnouncements,
   createAnnouncement,
   updateAnnouncement,
