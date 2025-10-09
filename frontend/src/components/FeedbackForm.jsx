@@ -166,9 +166,11 @@ export default function FeedbackForm() {
           >
             {submitting ? "Submitting..." : "Submit"}
           </button>
+
+          <p className="text-center mt-4 hover:underline"> <Link to={"/"}>Go Back to Home</Link></p>
         </form>
-        <Link to={"/"}>Go Back to Home</Link>
-        <Link to={"/Summary"}>Go Back to Summary</Link>
+       
+  
       </div>
     </div>
   );

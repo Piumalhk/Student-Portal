@@ -109,86 +109,7 @@ const Dashboard = ({ studentName }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content (Cards Grid) */}
         <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Quick Actions Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <span className="text-blue-500 mr-2">⚡</span> Quick Actions
-            </h2>
-            <div className="space-y-3">
-              <Link
-                to="/Feedback"
-                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors"
-              >
-                <div className="bg-blue-100 text-blue-600 p-2 rounded-md mr-3">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    ></path>
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-800">Give Feedback</h3>
-                  <p className="text-sm text-gray-500">Share your thoughts</p>
-                </div>
-              </Link>
-              <Link
-                to="/courses"
-                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors"
-              >
-                <div className="bg-green-100 text-green-600 p-2 rounded-md mr-3">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                    ></path>
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-800">View Courses</h3>
-                  <p className="text-sm text-gray-500">Check course details</p>
-                </div>
-              </Link>
-              <Link
-                to="/notices"
-                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-yellow-50 hover:border-yellow-300 transition-colors"
-              >
-                <div className="bg-yellow-100 text-yellow-600 p-2 rounded-md mr-3">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 17h5l-5 5v-5zM11 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4z"
-                    ></path>
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-800">Check Notices</h3>
-                  <p className="text-sm text-gray-500">View announcements</p>
-                </div>
-              </Link>
-            </div>
-          </div>
+         
           {/* Courses Card */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
@@ -306,7 +227,7 @@ const Dashboard = ({ studentName }) => {
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-8">
           {/* Today's Schedule Widget */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-6 h-100">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
               <span className="text-blue-500 mr-2">📅</span> Today's Schedule
             </h2>
