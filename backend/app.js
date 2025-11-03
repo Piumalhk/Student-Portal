@@ -4,6 +4,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const authRoutes = require("./routes/auth-routes");
+const adminRoutes = require("./routes/admin-routes");
+const adminAuthRoutes = require("./routes/admin-auth-routes");
+const feedbackRoutes = require("./routes/feedback-routes");
+const noticeRoutes = require("./routes/notice-routes");
+const publicRoutes = require("./routes/public-routes");
+
 
 const app = express();
 
@@ -13,6 +19,12 @@ app.use(express.json()); // Parse JSON request bodies
 
 // API Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin-auth", adminAuthRoutes);
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/notices", noticeRoutes);
+app.use("/api/public", publicRoutes);
+
 
 // Root route for API health check
 app.get("/", (req, res) => {

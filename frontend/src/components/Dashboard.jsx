@@ -1,24 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 
 const Dashboard = ({ studentName }) => {
-  // Sample data for the feedback chart
-  const feedbackData = [
-    { name: "Semester 1", submissions: 5 },
-    { name: "Semester 2", submissions: 3 },
-    { name: "Semester 3", submissions: 7 },
-    { name: "Semester 4", submissions: 2 },
-  ];
+  const [announcements, setAnnouncements] = useState([]);
+  const [scheduleData, setScheduleData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Sample courses data
   const courses = [
@@ -54,92 +40,39 @@ const Dashboard = ({ studentName }) => {
     },
   ];
 
-  // Sample announcements data
-  const announcements = [
-    {
-      id: 1,
-      title: "Mid-Term Exam Schedule",
-      date: "2025-09-30",
-      summary:
-        "Mid-term exams will start from October 15th. Check your schedule.",
-      link: "/notices/1",
-    },
-    {
-      id: 2,
-      title: "Campus Maintenance",
-      date: "2025-09-18",
-      summary: "The library will be closed this weekend for maintenance.",
-      link: "/notices/2",
-    },
-    {
-      id: 3,
-      title: "New Course Registration",
-      date: "2025-09-15",
-      summary: "Registration for elective courses is now open.",
-      link: "/notices/3",
-    },
-  ];
+  // Fetch announcements and schedule from admin
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch announcements
+        const announcementsResponse = await fetch(
+          "http://localhost:5000/api/public/announcements"
+        );
+        if (announcementsResponse.ok) {
+          const announcementsData = await announcementsResponse.json();
+          // The API returns { announcements: [...] }, already filtered for active ones
+          setAnnouncements(announcementsData.announcements || []);
+        }
 
-  // Sample upcoming events data
-  const events = [
-    {
-      id: 1,
-      title: "Programming Assignment",
-      course: "CS101",
-      deadline: "2025-10-05",
-      type: "assignment",
-    },
-    {
-      id: 2,
-      title: "Database Project Proposal",
-      course: "CS301",
-      deadline: "2025-10-12",
-      type: "assignment",
-    },
-    {
-      id: 3,
-      title: "Technical Writing Report",
-      course: "ENG105",
-      deadline: "2025-09-25",
-      type: "assignment",
-    },
-    {
-      id: 4,
-      title: "Annual Tech Fest",
-      deadline: "2025-11-10",
-      type: "event",
-    },
-  ];
+        // Fetch schedule
+        const scheduleResponse = await fetch(
+          "http://localhost:5000/api/public/schedule"
+        );
+        if (scheduleResponse.ok) {
+          const scheduleDataResult = await scheduleResponse.json();
+          // The API returns { schedule: [...] }
+          setScheduleData(scheduleDataResult.schedule || []);
+        }
 
-  // Sample calendar events (for today)
-  const todayEvents = [
-    { time: "09:00 AM", title: "CS101 Lecture", location: "Room 201" },
-    { time: "11:00 AM", title: "Study Group", location: "Library" },
-    { time: "02:00 PM", title: "MATH201 Tutorial", location: "Room 305" },
-  ];
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
 
-  // Sample messages
-  const messages = [
-    {
-      id: 1,
-      from: "Dr. Johnson",
-      subject: "Assignment Feedback",
-      time: "10:30 AM",
-      read: false,
-    },
-    {
-      id: 2,
-      from: "Admin Office",
-      subject: "Fee Payment Reminder",
-      time: "Yesterday",
-      read: true,
-    },
-  ];
-
-  // Sort events by deadline (closest first)
-  const sortedEvents = [...events].sort(
-    (a, b) => new Date(a.deadline) - new Date(b.deadline)
-  );
+    fetchData();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -171,47 +104,12 @@ const Dashboard = ({ studentName }) => {
             <span className="mr-2">🔔</span> Check Notices
           </Link>
         </div>
-      </div>
-
-      {/* Main Dashboard Grid with Sidebar */}
-      <div className="flex flex-col lg:flex-row gap-8">
+      </div>{" "}
+      {/* Main Dashboard Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content (Cards Grid) */}
-        <div className="lg:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Feedback Summary Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <span className="text-blue-500 mr-2">📊</span> Your Feedback
-              Contributions
-            </h2>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={feedbackData}
-                  margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="submissions"
-                    name="Feedback Submissions"
-                    fill="#4f46e5"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="mt-4 text-center">
-              <Link
-                to="/Feedback"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Submit New Feedback
-              </Link>
-            </div>
-          </div>
-
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+         
           {/* Courses Card */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
@@ -241,103 +139,95 @@ const Dashboard = ({ studentName }) => {
                 View All Courses ({courses.length})
               </Link>
             </div>
-          </div>
-
-          {/* Notices / Announcements Card */}
+          </div>{" "}
+          {/* Announcements Card */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <span className="text-blue-500 mr-2">📢</span> Announcements
+              <span className="text-blue-500 mr-2">📢</span> Latest
+              Announcements
             </h2>
-            <div className="space-y-4">
-              {announcements.slice(0, 3).map((announcement) => (
-                <div
-                  key={announcement.id}
-                  className="border-b border-gray-100 pb-3 last:border-0"
+            {loading ? (
+              <div className="text-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+                <p className="text-sm text-gray-500 mt-2">
+                  Loading announcements...
+                </p>
+              </div>
+            ) : announcements.length === 0 ? (
+              <div className="text-center py-8">
+                <svg
+                  className="mx-auto h-12 w-12 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <h3 className="font-medium text-gray-800">
-                      {announcement.title}
-                    </h3>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">
-                      {new Date(announcement.date).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {announcement.summary}
-                  </p>
-                  <Link
-                    to={announcement.link}
-                    className="text-sm text-blue-600 hover:text-blue-800"
-                  >
-                    Read more →
-                  </Link>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 text-center">
-              <Link
-                to="/notices"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                View All Announcements
-              </Link>
-            </div>
-          </div>
-
-          {/* Events / Upcoming Deadlines Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <span className="text-blue-500 mr-2">📅</span> Upcoming Deadlines
-            </h2>
-            <div className="space-y-3">
-              {sortedEvents.slice(0, 4).map((event) => (
-                <div
-                  key={event.id}
-                  className="flex p-3 border border-gray-100 rounded-lg hover:bg-gray-50"
-                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 17h5l-5 5v-5zM11 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4z"
+                  ></path>
+                </svg>
+                <p className="text-gray-500 text-sm mt-2">
+                  No announcements yet
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {announcements.slice(0, 3).map((announcement) => (
                   <div
-                    className={`p-2 rounded-md mr-3 text-center min-w-16 ${
-                      event.type === "assignment"
-                        ? "bg-orange-100 text-orange-800"
-                        : "bg-purple-100 text-purple-800"
-                    }`}
+                    key={announcement._id}
+                    className="border-b border-gray-100 pb-3 last:border-0"
                   >
-                    <div className="text-xs font-medium">
-                      {new Date(event.deadline).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
+                    <div className="flex justify-between items-center mb-1">
+                      <h3 className="font-medium text-gray-800">
+                        {announcement.title}
+                      </h3>
+                      <div className="flex items-center space-x-2">
+                        <span
+                          className={`px-2 py-1 text-xs rounded-full ${
+                            announcement.priority === "urgent"
+                              ? "bg-red-100 text-red-800"
+                              : announcement.priority === "high"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
+                        >
+                          {announcement.priority}
+                        </span>
+                        <span className="text-xs text-gray-500 whitespace-nowrap">
+                          {new Date(
+                            announcement.createdAt
+                          ).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-xs">
-                      {new Date(event.deadline).getFullYear()}
-                    </div>
+                    <p className="text-sm text-gray-600 mb-1">
+                      {announcement.content.length > 100
+                        ? `${announcement.content.substring(0, 100)}...`
+                        : announcement.content}
+                    </p>
                   </div>
-                  <div>
-                    <h3 className="font-medium text-gray-800">{event.title}</h3>
-                    {event.course && (
-                      <p className="text-xs text-gray-500">
-                        Course: {event.course}
-                      </p>
-                    )}
+                ))}
+                {announcements.length > 3 && (
+                  <div className="mt-4 text-center">
+                    <Link
+                      to="/notices"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      View All Announcements ({announcements.length})
+                    </Link>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 text-center">
-              <Link
-                to="/calendar"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                View Full Calendar
-              </Link>
-            </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Sidebar Widgets */}
-        <div className="lg:w-1/4 space-y-8">
-          {/* Mini Calendar Widget */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-8">
+          {/* Today's Schedule Widget */}
+          <div className="bg-white rounded-xl shadow-md p-6 h-100">
             <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
               <span className="text-blue-500 mr-2">📅</span> Today's Schedule
             </h2>
@@ -348,84 +238,47 @@ const Dashboard = ({ studentName }) => {
                 day: "numeric",
               })}
             </div>
-            <div className="space-y-3">
-              {todayEvents.map((event, index) => (
-                <div
-                  key={index}
-                  className="border-l-4 border-blue-500 pl-3 py-1"
-                >
-                  <p className="text-sm font-medium text-gray-800">
-                    {event.time}
-                  </p>
-                  <p className="text-sm text-gray-700">{event.title}</p>
-                  <p className="text-xs text-gray-500">{event.location}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Attendance Widget */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <span className="text-blue-500 mr-2">📈</span> Attendance
-            </h2>
-            <div className="text-center mb-2 font-medium">87% Overall</div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div
-                className="bg-green-600 h-2.5 rounded-full"
-                style={{ width: "87%" }}
-              ></div>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-              <div className="text-center p-2 bg-gray-50 rounded">
-                <p className="text-gray-500">Present</p>
-                <p className="font-medium">26 days</p>
+            {loading ? (
+              <div className="text-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto"></div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Loading schedule...
+                </p>
               </div>
-              <div className="text-center p-2 bg-gray-50 rounded">
-                <p className="text-gray-500">Absent</p>
-                <p className="font-medium">4 days</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Messages Widget */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <span className="text-blue-500 mr-2">📨</span> Messages
-            </h2>
-            <div className="space-y-3">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className="p-3 border border-gray-100 rounded-lg hover:bg-gray-50"
+            ) : scheduleData.length === 0 ? (
+              <div className="text-center py-6">
+                <svg
+                  className="mx-auto h-10 w-10 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-800">
-                      {message.from}
-                    </span>
-                    {!message.read && (
-                      <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">
-                        New
-                      </span>
-                    )}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h8m-8 0a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2V9a2 2 0 00-2-2"
+                  ></path>
+                </svg>
+                <p className="text-gray-500 text-xs mt-2">No schedule items</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {scheduleData.map((schedule) => (
+                  <div
+                    key={schedule._id}
+                    className="border-l-4 border-blue-500 pl-3 py-2"
+                  >
+                    {" "}
+                    <p className="text-sm font-medium text-gray-800">
+                      {schedule.time}
+                    </p>
+                    <p className="text-sm text-gray-700">{schedule.title}</p>
+                    <p className="text-xs text-gray-500">{schedule.location}</p>
                   </div>
-                  <p className="text-sm text-gray-600 truncate">
-                    {message.subject}
-                  </p>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {message.time}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 text-center">
-              <Link
-                to="/messages"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                View All Messages
-              </Link>
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -41,11 +41,11 @@ const signup = async (req, res) => {
     });
 
     // Save the user
-    await newUser.save();
-
+    await newUser.save(); 
+    
     // Generate JWT token
     const token = jwt.sign(
-      { userId: newUser._id, username: newUser.username },
+      { userId: newUser._id, username: newUser.username, role: newUser.role },
       JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
@@ -58,6 +58,7 @@ const signup = async (req, res) => {
         id: newUser._id,
         username: newUser.username,
         email: newUser.email,
+        role: newUser.role,
       },
     });
   } catch (error) {
@@ -91,11 +92,9 @@ const login = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid username or password" });
-    }
-
-    // Generate JWT token
+    } // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id, username: user.username },
+      { userId: user._id, username: user.username, role: user.role },
       JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
@@ -104,7 +103,12 @@ const login = async (req, res) => {
     return res.status(200).json({
       message: "Login successful",
       token,
-      user: { id: user._id, username: user.username, email: user.email },
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -119,7 +123,16 @@ const getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json({ user });
+
+    // Format the response to match login/signup responses
+    return res.status(200).json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(error);
     return res

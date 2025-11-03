@@ -38,8 +38,8 @@ export default function HomePage() {
   // If not logged in, show the landing page
   return (
     <div>
-      <NavBar />
- <ImageChanger />
+      <NavBar /><br></br>
+      <ImageChanger />
       <div className="pt-100">
         <section className="w-full min-h-[350px] bg-white flex items-center justify-center">
           <div className="max-w-3xl px-4">
@@ -61,12 +61,115 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
       </div>
 
-     
-
-      <footer className="bg-gray-800 text-white text-center py-6 mt-20 w-100%">
-        <p>© 2025 Piumal Harshana | All rights reserved</p>
+      <footer className="bg-gray-800 text-white py-8 mt-20 w-100%">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-center items-center">
+           
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-80 ">
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-blue-300">
+                  Quick Links
+                </h3>
+                <ul className="space-y-2 text-gray-400 ">
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Dashboard
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Notices
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Feedback
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-blue-300">
+                  Resources
+                </h3>
+                <ul className="space-y-2 text-gray-400">
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Help Center
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Academic Calendar
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Contact Support
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-blue-300">
+                  Connect
+                </h3>
+                <ul className="space-y-2 text-gray-400">
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Facebook
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Twitter
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="hover:text-blue-300 transition duration-300"
+                    >
+                      Instagram
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-6 text-center">
+            <p className="text-gray-400">
+              © 2025 Student Portal | All rights reserved
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );
