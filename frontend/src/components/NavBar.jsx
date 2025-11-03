@@ -36,7 +36,7 @@ export default function NavBar() {
         <div className="hidden xl:flex items-center justify-center gap-3 pe-15">
           {!isLoggedIn ? (
             <Link
-              to="/admin"
+              to="/Admin"
               className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-all"
             >
               Admin Login
