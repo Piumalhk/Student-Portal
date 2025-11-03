@@ -8,6 +8,7 @@ import Loading from "./components/Loading";
 import AdminSummary from "./Pages/AdminSummary";
 import AdminLogin from "./components/AdminLogin";
 import About from "./Pages/About";
+import Contact from "./Pages/Contact";
 
 
 function AppContent() {
@@ -25,6 +26,7 @@ function AppContent() {
           <Route path="/Summary" element={<AdminSummary />} />
           <Route path="/Admin" element={<AdminLogin />} />
           <Route path="/About" element={<About />} />
+          <Route path="/Contact" element={<Contact />} />
         </Routes>
       </Router>
     </div>
